@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/equipments', (req, res) => {
-  res.render('equipments', { title: 'Equipments' });
+  res.redirect('/catalog');
 });
 
 module.exports = router;
