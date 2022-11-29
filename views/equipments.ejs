@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="shop-container">
+      <h1><%= title %></h1>
+      <div class="item-container">
+        <select name="items" id="items">
+          <option value="all">All items</option>
+          <option value="armor">Armor</option>
+          <option value="weapon">Weapon</option>
+          <option value="consumable">Consumable</option>
+        </select>
+        <p>stock</p>
+        <p>price</p>
+      </div>
+    </div>
+  </body>
+</html>
