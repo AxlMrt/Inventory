@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <form method="POST" action="" enctype="multipart/form-data">
+      <input type="file" name="img" id="img" required>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="name"
+        value="<%= typeof product === 'undefined' ? '' : product.name %>"
+        required
+      />
+      <input
+        type="text"
+        name="company"
+        id="company"
+        placeholder="company"
+        value="<%= typeof product === 'undefined' ? '' : product.company %>"
+        required
+      />
+      <input
+        type="number"
+        name="price"
+        id="price"
+        value="<%= typeof product === 'undefined' ? '' : product.price %>"
+        required
+      />
+      <button type="submit">Validate</button>
+    </form>
+
+    <% if(typeof errors !='undefined'){ %>
+      <ul>
+        <% errors.forEach(err=>{%>
+        <li><%=err.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </body>
+</html>

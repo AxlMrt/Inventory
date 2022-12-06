@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="title_container">
+      <h2><%= title %></h2>
+    </div>
+    <div class="product_container">
+      <% products.forEach((product) => { %>
+        <div class="product_card">
+          <img src="<%= product.img %>" alt="product design">
+          <div>
+            <a href="product/<%= product.name %>"><%= product.name %></a>
+            <span>$ <%= product.price %></span>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </body>
+</html>

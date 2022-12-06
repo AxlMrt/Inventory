@@ -1,0 +1,70 @@
+:root {
+  --bodyBG: #f5f5f5;
+  --logo: #fed7aa;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background: var(--bodyBG);
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 15%;
+}
+
+.header_logo {
+  color: var(--logo);
+}
+
+nav > ul {
+  display: flex;
+  gap: 1rem;
+}
+
+.title_container {
+  width: 100%;
+  background: var(--logo);
+  padding: 2rem 15%;
+}
+
+.product_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 2rem 15%;
+  gap: 1rem;
+}
+
+.product_card {
+  width: 10rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: white;
+  border-radius: 0.5rem;
+}
+
+.product_card img {
+  width: 100%;
+}
+
+/* Global decorations*/
+li{
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
