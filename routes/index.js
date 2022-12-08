@@ -20,8 +20,13 @@ const upload = multer({
 
 const {
   productList,
+  singleProduct,
   createGet,
   createPost,
+  updateGet,
+  updatePost,
+  deleteGet,
+  deletePost
 } = require('../controllers/products');
 
 router.get('/', function (req, res, next) {
@@ -29,8 +34,15 @@ router.get('/', function (req, res, next) {
 });
 
 router.route('/product').get(productList);
+router.get('/product/:id/detail', singleProduct);
 
 router.get('/product/create', createGet);
 router.post('/product/create', upload.single('img'), createPost);
+
+router.get('/product/:id/update', updateGet);
+router.post('/product/:id/update', updatePost);
+
+router.get('/product/:id/delete', deleteGet);
+router.post('/product/:id/delete', deletePost);
 
 module.exports = router;

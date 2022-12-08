@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="title_container">
+      <h2><%= title %></h2>
+    </div>
+    <form action="" method="POST">
+      <div>
+        <input type="hidden" name="id" id="id" value="<%= product._id%>" required>
+      </div>
+      <button type="submit">Delete</button>
+    </form>
+  </body>
+</html>

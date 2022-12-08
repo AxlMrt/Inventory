@@ -1,6 +1,4 @@
-var multer = require('multer');
-var upload = multer({ dest: 'public/images/' });
-
+const async = require('async');
 const { body, validationResult } = require('express-validator');
 
 const Product = require('../models/product');
@@ -12,6 +10,30 @@ const productList = async (req, res, next) => {
       if (error) next(error);
       res.render('product_list', { title: 'Product list', products });
     });
+};
+
+const singleProduct = async (req, res, next) => {
+  async.parallel(
+    {
+      product(cb) {
+        Product.findById(req.params.id).exec(cb);
+      },
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+      if (results.product == null) {
+        const err = new Error('Product not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('product_detail', {
+        title: 'Details',
+        product: results.product,
+      });
+    }
+  );
 };
 
 const getAllProducts = async (req, res) => {
@@ -78,25 +100,25 @@ const getAllProducts = async (req, res) => {
 };
 
 const createGet = async (req, res) => {
-  res.render('form', { title: 'new item' });
+  res.render('product_create', { title: 'new item' });
 };
 
 const createPost = [
-  body("name")
+  body('name')
     .exists()
-    .withMessage("Name of product must be specified.")
+    .withMessage('Name of product must be specified.')
     .trim()
     .isLength({ min: 3 })
     .escape(),
-  body("company")
+  body('company')
     .exists()
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Name of company must be specified."),
-  body("price")
+    .withMessage('Name of company must be specified.'),
+  body('price')
     .exists()
-    .withMessage("Product must have a price")
+    .withMessage('Product must have a price')
     .isNumeric()
     .escape(),
 
@@ -104,8 +126,8 @@ const createPost = [
     const errors = validationResult(req);
     const receivedPath = req.file.path;
     const cleanedPath = receivedPath.slice(6);
-  
-    const product = new Product({
+
+    const product = await Product.create({
       img: cleanedPath,
       name: req.body.name,
       company: req.body.company,
@@ -114,15 +136,14 @@ const createPost = [
 
     if (!errors.isEmpty()) {
       //there are errors, render the form again with remarks considered.
-
       Product.find().exec(async function (err, results) {
         if (err) {
           return next(err);
         }
-        res.render('form', {
+        res.render('product_create', {
           title: 'Add New Model',
           product: product,
-          errors: errors.array()
+          errors: errors.array(),
         });
       });
       return;
@@ -131,15 +152,127 @@ const createPost = [
         if (err) {
           return next(err);
         }
-        res.redirect(product.name);
+        res.redirect('/product');
       });
     }
   },
 ];
 
+const updateGet = async (req, res, next) => {
+  async.parallel(
+    {
+      product(cb) {
+        Product.findById(req.params.id).exec(cb);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.product == null) {
+        const err = new Error('Product not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('product_create', {
+        title: 'Update',
+        product: results.product,
+      });
+    }
+  );
+};
+
+const updatePost = [
+  body('name')
+    .exists()
+    .withMessage('Name of product must be specified.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('company')
+    .exists()
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage('Name of company must be specified.'),
+  body('price')
+    .exists()
+    .withMessage('Product must have a price')
+    .isNumeric()
+    .escape(),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const product = new Product({
+      img: req.body.img,
+      name: req.body.name,
+      company: req.body.company,
+      price: req.body.price,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      Product.find().exec(function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        res.render('product_create', {
+          title: 'update',
+          product: results.product,
+          errors: errors.array(),
+        });
+      });
+      return;
+    } else {
+      Product.findByIdAndUpdate(
+        req.params.id,
+        product,
+        {},
+        function (err, theproduct) {
+          if (err) {
+            return next(err);
+          }
+          res.redirect(theproduct.url);
+        }
+      );
+    }
+  },
+];
+
+const deleteGet = async (req, res, next) => {
+  Product.findById(req.params.id).exec(function (err, product) {
+    if (err) {
+      return next(err);
+    }
+    if (product == null) {
+      res.redirect('/product');
+    }
+    res.render('product_delete', {
+      title: 'delete',
+      product: product,
+    });
+  });
+};
+
+const deletePost = async (req, res, next) => {
+  const trimID = req.body.id.trim();
+  Product.findByIdAndRemove(trimID, function deleteProd(err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/product');
+  });
+};
+
 module.exports = {
   productList,
+  singleProduct,
   getAllProducts,
   createGet,
   createPost,
+  updateGet,
+  updatePost,
+  deleteGet,
+  deletePost,
 };

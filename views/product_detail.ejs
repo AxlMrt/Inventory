@@ -7,19 +7,13 @@
       <h2><%= title %></h2>
     </div>
     <div class="product_container">
-      <% products.forEach((product) => { %>
         <div class="product_card">
           <img src="<%= product.img %>" alt="product design">
           <div>
-            <a href="product/<%= product.id %>/detail"><%= product.name %></a>
+            <p><%= product.name %></p>
             <span>$ <%= product.price %></span>
           </div>
-          <div>
-            <button><a href="product/<%= product.id %>/update">Update</a></button>
-            <button><a href="product/<%= product.id %>/delete">Delete</a></button>
-          </div>
         </div>
-      <% }) %>
     </div>
   </body>
 </html>

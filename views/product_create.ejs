@@ -31,6 +31,13 @@
       <button type="submit">Validate</button>
     </form>
 
+    <% if(typeof product != 'undefined' && product.img && product.img !=
+    'undefined' ){ %>
+    <div>
+      <img src="<%= product.img %> " alt="<%= product.img %> " />
+    </div>
+    <% } %>
+
     <% if(typeof errors !='undefined'){ %>
       <ul>
         <% errors.forEach(err=>{%>
