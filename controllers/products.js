@@ -99,7 +99,7 @@ const getAllProducts = async (req, res) => {
   res.status(200).json({ products, nbHits: products.length });
 };
 
-const createGet = async (req, res) => {
+const createGet = (req, res) => {
   res.render('product_create', { title: 'new item' });
 };
 
@@ -122,12 +122,12 @@ const createPost = [
     .isNumeric()
     .escape(),
 
-  async (req, res, next) => {
+  (req, res, next) => {
     const errors = validationResult(req);
     const receivedPath = req.file.path;
     const cleanedPath = receivedPath.slice(6);
 
-    const product = await Product.create({
+    const product = new Product({
       img: cleanedPath,
       name: req.body.name,
       company: req.body.company,
@@ -136,7 +136,7 @@ const createPost = [
 
     if (!errors.isEmpty()) {
       //there are errors, render the form again with remarks considered.
-      Product.find().exec(async function (err, results) {
+      Product.find().exec(function (err, results) {
         if (err) {
           return next(err);
         }
@@ -148,7 +148,7 @@ const createPost = [
       });
       return;
     } else {
-      product.save(async function (err) {
+      product.save(function (err) {
         if (err) {
           return next(err);
         }
@@ -158,7 +158,7 @@ const createPost = [
   },
 ];
 
-const updateGet = async (req, res, next) => {
+const updateGet = (req, res, next) => {
   async.parallel(
     {
       product(cb) {
@@ -201,7 +201,7 @@ const updatePost = [
     .isNumeric()
     .escape(),
 
-  async (req, res, next) => {
+  (req, res, next) => {
     const errors = validationResult(req);
 
     const product = new Product({
@@ -211,6 +211,10 @@ const updatePost = [
       price: req.body.price,
       _id: req.params.id,
     });
+
+    if (req.file) {
+			product.img = req.file.filename
+		}
 
     if (!errors.isEmpty()) {
       Product.find().exec(function (err, results) {

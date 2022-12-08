@@ -40,7 +40,7 @@ router.get('/product/create', createGet);
 router.post('/product/create', upload.single('img'), createPost);
 
 router.get('/product/:id/update', updateGet);
-router.post('/product/:id/update', updatePost);
+router.post('/product/:id/update', upload.single("img"), updatePost);
 
 router.get('/product/:id/delete', deleteGet);
 router.post('/product/:id/delete', deletePost);
