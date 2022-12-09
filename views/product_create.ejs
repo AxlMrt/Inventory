@@ -3,40 +3,46 @@
   <%- include('./partials/head.ejs') %>
   <body>
     <%- include('./partials/nav.ejs') %>
-    <form method="POST" action="" enctype="multipart/form-data">
-      <input type="file" name="img" id="img" required>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="name"
-        value="<%= typeof product === 'undefined' ? '' : product.name %>"
-        required
-      />
-      <input
-        type="text"
-        name="company"
-        id="company"
-        placeholder="company"
-        value="<%= typeof product === 'undefined' ? '' : product.company %>"
-        required
-      />
-      <input
-        type="number"
-        name="price"
-        id="price"
-        value="<%= typeof product === 'undefined' ? '' : product.price %>"
-        required
-      />
-      <button type="submit">Validate</button>
-    </form>
-
-    <% if(typeof product != 'undefined' && product.img && product.img !=
-    'undefined' ){ %>
-    <div>
-      <img src="<%= product.img %> " alt="<%= product.img %> " />
+    <div class="title_container">
+      <h2><%= title %></h2>
     </div>
-    <% } %>
+    <div class="form_container">
+      <form method="POST" action="" enctype="multipart/form-data" class="form_create">
+        <h3><%= formTitle %></h3>
+        <div class="preference">
+          <label for="img">Image:</label>
+          <input type="file" name="img" id="img" required>
+        </div>
+        <div class="preference">
+          <label for="name">Product name:</label>
+          <input
+          type="text"
+          name="name"
+          value="<%= typeof product === 'undefined' ? '' : product.name %>"
+          required
+          />
+        </div>
+        <div class="preference">
+          <label for="company">Company:</label>
+          <input
+          type="text"
+          name="company"
+          value="<%= typeof product === 'undefined' ? '' : product.company %>"
+          required
+          />
+        </div>
+        <div class="preference">
+          <label for="price">Price:</label>
+          <input
+            type="number"
+            name="price"
+            value="<%= typeof product === 'undefined' ? '' : product.price %>"
+            required
+          />
+        </div>
+        <button type="submit">Continue</button>
+      </form>
+    </div>
 
     <% if(typeof errors !='undefined'){ %>
       <ul>

@@ -10,13 +10,13 @@
       <% products.forEach((product) => { %>
         <div class="product_card">
           <img src="<%= product.img %>" alt="product design">
-          <div>
+          <div class="card_text">
             <a href="product/<%= product.id %>/detail"><%= product.name %></a>
             <span>$ <%= product.price %></span>
           </div>
-          <div>
-            <button><a href="product/<%= product.id %>/update">Update</a></button>
-            <button><a href="product/<%= product.id %>/delete">Delete</a></button>
+          <div class="card_btn">
+            <a href="product/<%= product.id %>/update"><i class="fa-regular fa-pen-to-square"></i></a>
+            <a href="product/<%= product.id %>/delete"><i class="fa-regular fa-trash-can"></i></a>
           </div>
         </div>
       <% }) %>

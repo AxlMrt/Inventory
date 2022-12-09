@@ -8,7 +8,7 @@ const productList = async (req, res, next) => {
     .select()
     .exec(function (error, products) {
       if (error) next(error);
-      res.render('product_list', { title: 'Product list', products });
+      res.render('product_list', { title: 'Store', products });
     });
 };
 
@@ -100,7 +100,7 @@ const getAllProducts = async (req, res) => {
 };
 
 const createGet = (req, res) => {
-  res.render('product_create', { title: 'new item' });
+  res.render('product_create', { title: 'Create', formTitle: 'New Product' });
 };
 
 const createPost = [
@@ -141,7 +141,7 @@ const createPost = [
           return next(err);
         }
         res.render('product_create', {
-          title: 'Add New Model',
+          title: 'New Product',
           product: product,
           errors: errors.array(),
         });
@@ -159,6 +159,28 @@ const createPost = [
 ];
 
 const updateGet = (req, res, next) => {
+  const reject = () => {
+    res.setHeader('www-authenticate', 'Basic');
+    res.sendStatus(401);
+  };
+
+  const authorization = req.headers.authorization;
+
+  if (!authorization) {
+    return reject();
+  }
+
+  const [username, password] = Buffer.from(
+    authorization.replace('Basic ', ''),
+    'base64'
+  )
+    .toString()
+    .split(':');
+
+  if (!(username === 'axel' && password === 'my-favorite-password')) {
+    return reject();
+  }
+
   async.parallel(
     {
       product(cb) {
@@ -176,6 +198,7 @@ const updateGet = (req, res, next) => {
       }
       res.render('product_create', {
         title: 'Update',
+        formTitle: 'Update Product',
         product: results.product,
       });
     }
@@ -213,8 +236,8 @@ const updatePost = [
     });
 
     if (req.file) {
-			product.img = req.file.filename
-		}
+      product.img = req.file.filename;
+    }
 
     if (!errors.isEmpty()) {
       Product.find().exec(function (err, results) {
@@ -245,6 +268,26 @@ const updatePost = [
 ];
 
 const deleteGet = async (req, res, next) => {
+  const reject = () => {
+    res.setHeader('www-authenticate', 'Basic');
+    res.sendStatus(401);
+  }
+
+  const authorization = req.headers.authorization;
+
+  if (!authorization) {
+    return reject();
+  }
+
+  const [username, password] = Buffer.from(
+    authorization.replace('Basic', ''),
+    'base64'
+  ).toString().split(':');
+
+  if (!(username === 'axel') && password === 'my-favorite-password') {
+    return reject();
+  }
+
   Product.findById(req.params.id).exec(function (err, product) {
     if (err) {
       return next(err);
@@ -252,8 +295,9 @@ const deleteGet = async (req, res, next) => {
     if (product == null) {
       res.redirect('/product');
     }
+    console.log(product);
     res.render('product_delete', {
-      title: 'delete',
+      title: 'Delete',
       product: product,
     });
   });

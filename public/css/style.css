@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+
 :root {
   --bodyBG: #f5f5f5;
-  --logo: #fed7aa;
+  --logo: #c4b5fd;
+  --formShadow: #cbd5e1;
+  --text: #44403c;
 }
 
 *,
@@ -13,6 +17,7 @@
 
 body{
   background: var(--bodyBG);
+  font-family: Roboto Condensed;
   margin: 0 auto;
 }
 
@@ -36,17 +41,20 @@ nav > ul {
   width: 100%;
   background: var(--logo);
   padding: 2rem 15%;
+  letter-spacing: 0.1rem;
 }
 
 .product_container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   padding: 2rem 15%;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .product_card {
-  width: 10rem;
+  width: 15rem;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -59,6 +67,64 @@ nav > ul {
   width: 100%;
 }
 
+.card_text {
+  display: flex;
+  justify-content: space-between;
+  padding: .5rem 0;
+  font-weight: 700;
+  text-transform: uppercase;
+
+}
+
+.card_btn {
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+}
+
+.card_btn > a:hover {
+  transform: scale(1.1);
+  transition: .3s ease-in;
+}
+
+.form_container {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_create {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 1rem;
+  box-shadow: 0 3px 5px 2px var(--formShadow);
+  gap: 1rem;
+}
+
+.preference{
+  display: flex;
+  flex-direction: column;
+}
+
+.preference input {
+  padding: 0.2rem 0.4rem;
+  outline: none;
+}
+
+.form_create > button {
+  background: var(--logo);
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  border-radius: 0.4rem;
+  border: none;
+  color: white;
+  padding: .8rem;
+  cursor: pointer;
+}
+
+
 /* Global decorations*/
 li{
   list-style: none;
@@ -66,5 +132,9 @@ li{
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: var(--text);
+}
+
+h1, h2, h3,label{
+  color: var(--text);
 }
